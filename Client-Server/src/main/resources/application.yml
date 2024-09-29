@@ -1,0 +1,24 @@
+server:
+  port: 9020
+spring:
+  application:
+    name: Messanger2
+  security:
+    oauth2:
+      client:
+        registration:
+          messanger-admin-client:
+            provider: authcloud
+            client-id: messanger-admin-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:9090/login/oauth2/code/{registrationId}"
+            scope: chats,profil,openid
+        provider:
+          authcloud:
+            issuer-uri: http://127.0.0.1:9000
+            authorization-uri: http://127.0.0.1:9000/oauth2/authorize
+            token-uri: http://127.0.0.1:9000/oauth2/token
+            jwk-set-uri: http://127.0.0.1:9000/oauth2/jwks
+            user-info-uri: http://127.0.0.1:9000/userinfo
+            user-name-attribute: sub
