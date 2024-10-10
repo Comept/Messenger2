@@ -5,6 +5,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.time.Duration;
 import java.util.UUID;
 
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
@@ -56,24 +58,26 @@ public class AuthorizationServerConfig {
 
 		return http.build();
 	  }
-	  @Bean
-	  public RegisteredClientRepository registeredClientRepository(
-	         PasswordEncoder passwordEncoder) {
-	   RegisteredClient registeredClient =
-	     RegisteredClient.withId(UUID.randomUUID().toString())
-	       .clientId("taco-admin-client")
-	       .clientAuthenticationMethod(
-	               ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-	       .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-	       .redirectUri(
-	           "http://127.0.0.1:9090/login/oauth2/code/taco-admin-client")
-	       .scope("writeIngredients")
-	       .scope("deleteIngredients")
-	       .scope(OidcScopes.OPENID)
+    @Bean
+    public RegisteredClientRepository registeredClientRepository(
+           PasswordEncoder passwordEncoder) {
+     RegisteredClient registeredClient =
+       RegisteredClient.withId(UUID.randomUUID().toString())
+         .clientId("messanger-admin-client")
+         .clientSecret(passwordEncoder.encode("secret"))
+         .clientAuthenticationMethod(
+                 ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+         .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+         .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+         .redirectUri(
+             "http://127.0.0.1:9090/login/oauth2/code/messanger-admin-client")
+         .scope("chats")
+         .scope("profil")
+         .scope(OidcScopes.OPENID)
 	       .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-	       .build();
-	   return new InMemoryRegisteredClientRepository(registeredClient);
-	  }
+         .build();
+     return new InMemoryRegisteredClientRepository(registeredClient);
+    }
 	 @Bean
 	 public JWKSource<SecurityContext> jwkSource()
 			 throws NoSuchAlgorithmException {

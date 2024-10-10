@@ -1,5 +1,5 @@
 package ali.salimov.petProject.service;
 
-public interface MessengeService {
+public class RestMessengerService {
 
 }

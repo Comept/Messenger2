@@ -22,7 +22,9 @@ public class SecurityConfig {
 	      .authorizeHttpRequests(authorizeRequests ->
 	        authorizeRequests.anyRequest().authenticated()
 	      )
-	     .build();
+	      .formLogin()
+	      .and()
+	      .build();
 	  }
 	@Bean
 	public PasswordEncoder passwordEncoder() {

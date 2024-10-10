@@ -20,6 +20,7 @@ public class SecurityConfig{
 			.authorizeHttpRequests((requests) -> requests
 					.requestMatchers("/chat/", "/chat/**")
 						.hasAuthority("SCOPE_chats")
+					.anyRequest().anonymous()
 			)
 			.oauth2ResourceServer(oAuth -> oAuth.jwt(Customizer.withDefaults()));
 		return http.build();

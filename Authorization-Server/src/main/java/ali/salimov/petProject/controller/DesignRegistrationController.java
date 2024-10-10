@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ali.salimov.petProject.model.User;
 import ali.salimov.petProject.repository.UserRepository;
-import security.RegistrationForm;
+import ali.salimov.petProject.security.RegistrationForm;
 
 
 @Controller 
