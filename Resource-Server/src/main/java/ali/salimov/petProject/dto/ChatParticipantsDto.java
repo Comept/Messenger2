@@ -13,4 +13,5 @@ public class ChatParticipantsDto {
     private final UserDto user;
     private final String role;
     private Date joinedAt;
+    private Date joinedAtt;
 }
