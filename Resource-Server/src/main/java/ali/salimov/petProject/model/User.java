@@ -3,6 +3,7 @@ package ali.salimov.petProject.model;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,19 +32,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name="users")
-public class User implements UserDetails, Serializable{
+public class User implements Serializable{
 
 	private static final long serialVersionUID = -6462501874197322250L;
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(unique=true, nullable = false)
-    private Long id;
+    private UUID id;
 	@Column(unique=true, nullable = false)
     private String username;
-    private String password;
     @Column(unique=true, nullable = false)
     private String email;
+	@Builder.Default
+	private List<String> grantedAuthority = new ArrayList<String>(List.of("USER_ROLE"));
     @Builder.Default
     private Date createdAt = new Date();
     
@@ -55,21 +56,26 @@ public class User implements UserDetails, Serializable{
     @OneToMany(mappedBy="user1Id")
     private List<Contacts> contacts = new ArrayList<Contacts>();
     
-    public User(Long id) {
+    public User(UUID id) {
 		super();
 		this.id = id;
 	}
     
-	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Arrays.asList(new SimpleGrantedAuthority("USER_ROLE"));
+		return grantedAuthority.stream().map(gA -> new SimpleGrantedAuthority(gA)).toList();
 	}
 
-	public User(Long id, String username, String password, String email, Date createdAt) {
+	public void addGrantedAuthority(String grantedAuthority) {
+		if(!this.grantedAuthority.contains(grantedAuthority))
+			this.grantedAuthority.add(grantedAuthority);
+	}
+	public void deleteGrantedAuthority(String grantedAuthority) {
+		this.grantedAuthority.remove(grantedAuthority);
+	}
+	public User(UUID id, String username, String email, Date createdAt) {
 		super();
 		this.id = id;
 		this.username = username;
-		this.password = password;
 		this.email = email;
 		this.createdAt = createdAt;
 	}

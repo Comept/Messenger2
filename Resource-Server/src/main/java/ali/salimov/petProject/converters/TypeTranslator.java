@@ -1,5 +1,7 @@
 package ali.salimov.petProject.converters;
 
+import java.util.UUID;
+
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 
@@ -9,11 +11,11 @@ import ali.salimov.petProject.model.User;
 @Named("TypeTranslator")
 public class TypeTranslator {
 	@Named("UserToLong")
-	public Long mapUserToLong(User user) {
+	public UUID mapUserToLong(User user) {
 		return user.getId();
 	}
 	@Named("LongToUser")
-	public User mapLongToUser(Long id) {
+	public User mapLongToUser(UUID id) {
 		return new User(id);
 	}
 	

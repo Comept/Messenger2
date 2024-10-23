@@ -2,12 +2,9 @@ package ali.salimov.petProject.dto;
 
 import java.util.Date;
 
-import ali.salimov.petProject.model.Chat;
-import ali.salimov.petProject.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
